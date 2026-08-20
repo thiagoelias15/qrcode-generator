@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+    <head>
+        <title>QR Code Generator</title>
+        <meta charset="utf-8">
+        <meta name= "viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="QR Code Generator">
+
+        <link rel = "icon" type = "image/png" href = "./images/icon.png">
+
+
+        <style>
+
+            * {
+
+                box-sizing: border-box;
+            }
+
+            body {
+
+                background: linear-gradient(135deg, #e0c3fc 0%, #fbc2eb 100%);
+                font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+                font-size: 16px;
+                margin: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                color: #4a4a4a;
+            }
+
+            .card {
+
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                border-radius: 24px;
+                padding: 40px 50px;
+                text-align: center;
+                width: 100%;
+                max-width: 450px;
+                transition: transform 0.3s ease;
+            }
+
+            .card:hover {
+
+                transform: translateY(-5px);
+            }
+
+            h1 {
+
+                color: #6b21a8;
+                margin-top: 0;
+                margin-bottom: 30px;
+                font-size: 28px;
+                font-weight: 700;
+                letter-spacing: -0.5px;
+            }
+
+            .form-group {
+
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            input[type="text"] {
+
+                width: 100%;
+                padding: 14px 20px;
+                font-size: 16px;
+                border: 2px solid #e9d5ff;
+                border-radius: 12px;
+                outline: none;
+                transition: all 0.3s ease;
+                background-color: #faf5ff;
+                color: #58054b;
+            }
+
+            input[type="text"]::placeholder {
+
+                color: #000000;
+                opacity: 0.6;
+            }
+
+            input[type="text"]:focus {
+
+                border-color: #c026d3;
+                background-color: #ffffff;
+                box-shadow: 0 0 0 4px rgba(192, 38, 211, 0.1);
+            }
+
+            .btn-generate {
+
+                background-color: #c026d3;
+                color: #ffffff;
+                font-weight: bold;
+                font-size: 16px;
+                padding: 14px 30px;
+                border: none;
+                border-radius: 12px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+
+            .btn-generate:hover {
+
+                background-color: #a21caf;
+                box-shadow: 0 6px 20px rgba(192, 38, 211, 0.4);
+                transform: translateY(-2px);
+            }
+
+            .btn-generate:active {
+
+                transform: translateY(0);
+                box-shadow: 0 2px 10px rgba(192, 38, 211, 0.3);
+            }
+
+            .qr-result {
+
+                margin-top: 30px;
+                padding-top: 20px;
+                border-top: 1px dashed #d8b4fe;
+                display: none;
+                animation: fadeIn 0.5s ease-in-out;
+            }
+
+            .qr-result img {
+
+                border-radius: 12px;
+                border: 3px solid #e9d5ff;
+                margin-top: 15px;
+                max-width: 100%;
+                height: auto;                
+            }
+
+            @keyframes fadeIn {
+
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+
+        </style>
+
+    </head>
+
+    <body>
+
+        <main>
+
+            <div class="card">
+
+                <h1>QR CODE GENERATOR</h1>
+                
+                <form method="POST" action="/generate" class="form-group">
+                    
+                    <input 
+                        type="text" 
+                        name="link" 
+                        placeholder="https://example.com"
+                        value = "{{ last_link if last_link else ''}}"
+                        required 
+                        autocomplete="url"
+                    >
+
+                    <button type="submit" class="btn-generate">GENERATE</button>
+                    
+                </form>
+
+                {% if qr_image %}
+
+                <div class="qr-result" id="qrResult" style = "display: block;">
+
+                    <p style = "color: #6b21a8; font-weight: 600; margin-bottom: 5px;">QR successfully generated</p>
+                    <p style = "font-size: 14px; color: #888; word-break: break-all;">{{ last_link }}</p>
+
+                    <img src = "data:image/png;base64,{{ qr_image }}" alt = "QR Code generated">
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </main>
+
+    </body>
+
+</html>
